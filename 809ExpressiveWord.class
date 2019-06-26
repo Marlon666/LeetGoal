@@ -1,0 +1,44 @@
+class Solution {
+    
+    static class Node {
+        String key;
+        List<Integer> counts;
+        
+        public Node(String s) {
+            counts = new ArrayList<>();
+            StringBuilder sb = new StringBuilder();
+            
+            int prev = -1;
+            for(int i = 0; i < s.length(); i++) {
+                if(i == s.length() - 1 || s.charAt(i) != s.charAt(i + 1)) {
+                    sb.append(s.charAt(i));
+                    counts.add(i - prev);
+                    prev = i;
+                }
+            }
+            
+            key = sb.toString();
+        }
+    }
+    
+    public int expressiveWords(String S, String[] words) {
+        Node s = new Node(S);
+        int ans = 0;
+        
+        search: for(String word : words) {
+            Node s2 = new Node(word);
+            if(!s2.key.equals(s.key)) continue;
+            for(int i = 0; i < s.counts.size(); i++) {
+                int c1 = s.counts.get(i);
+                int c2 = s2.counts.get(i);
+                
+                if(c1 < 3 && c1 != c2 || c1 < c2) {
+                    continue search;
+                }
+            }
+            ans++;
+        }
+        
+        return ans;
+    }
+}

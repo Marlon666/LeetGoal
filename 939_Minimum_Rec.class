@@ -1,0 +1,28 @@
+class Solution {
+    public int minAreaRect(int[][] points) {
+        TreeMap<Integer, List<Integer>> xy = new TreeMap<>();
+        
+        for(int[] point : points) {
+            xy.computeIfAbsent(point[0], (k) -> new ArrayList<>()).add(point[1]);
+        }
+        
+        int ans = Integer.MAX_VALUE;
+        Map<Integer, Integer> lastSeenX = new HashMap<>();
+        for(int x : xy.keySet()) {
+            List<Integer> row = xy.get(x);
+            Collections.sort(row);
+            for(int i = 0; i < row.size(); i++) {
+                for(int j = i + 1; j < row.size(); j++) {
+                    int y1 = row.get(i);
+                    int y2 = row.get(j);
+                    if(lastSeenX.containsKey(y1 * 40001 + y2)) {
+                        ans = Math.min(ans, (x - lastSeenX.get(y1 * 40001 + y2)) * (y2 - y1));
+                    }
+                    lastSeenX.put(y1 * 40001 + y2, x);
+                }
+            }
+        }
+        
+        return ans == Integer.MAX_VALUE ? 0 : ans;
+    }
+}
