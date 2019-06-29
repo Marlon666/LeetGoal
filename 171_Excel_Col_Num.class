@@ -1,0 +1,15 @@
+class Solution {
+    public int titleToNumber(String s) {
+        if(s == null) {
+            return 0;
+        }
+        
+        int res = 0;
+        for(int i = 0; i < s.length(); i++) {
+            char tmp = s.charAt(i);
+            res = res * 26 + (tmp - 'A') + 1;
+        }
+        
+        return res;
+    }
+}
